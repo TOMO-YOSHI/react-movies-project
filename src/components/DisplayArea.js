@@ -12,7 +12,6 @@ class DisplayArea extends Component {
             category: "popular",
             searchResults: [],
         }
-
     }
 
     fetchData = async(category) => {
@@ -27,40 +26,14 @@ class DisplayArea extends Component {
         // console.log(searchResults);
     }
 
-    componentWillMount() {
-
-    }
-
     componentDidMount() {
         if(this.props.type !== "search") {
             this.fetchData(this.state.category);
         }
-        // else if (this.props.type === "search") {
-        //     this.setState(prev => ({
-        //         ...prev,
-        //         searchResults: this.props.searchResults
-        //     }))
-        // }
-    }
-
-    componentWillReceiveProps(nextProps) {
-
-    }
-
-    // shouldComponentUpdate(nextProps, nextState) {
-
-    // }
-
-    componentWillUpdate(nextProps, nextState) {
-
     }
 
     componentDidUpdate(prevProps, prevState) {
-        // console.log("componentDidUpdate");
-        // console.log(prevState);
-        // console.log(this.state);
         if(prevState.category !== this.state.category) {
-            // console.log("fetch");
             this.fetchData(this.state.category);
 
         }
@@ -72,10 +45,6 @@ class DisplayArea extends Component {
                     searchResultMessage: "Sorry, there were no results",
                 }))
         }
-    }
-
-    componentWillUnmount() {
-
     }
 
     onChange = (e) => {
@@ -90,13 +59,15 @@ class DisplayArea extends Component {
             <div>
                 {
                     this.props.type !== "search" ?
-                    <DropdownList
-                        initialState={{category: 'popular'}}
-                        name="category"
-                        label="Category"
-                        options={this.props.dropdownOptions}
-                        onChange={this.onChange}
-                    />
+                    <DropdownWrapperDiv>
+                        <DropdownList
+                            initialState={{category: 'popular'}}
+                            name="category"
+                            label="Category"
+                            options={this.props.dropdownOptions}
+                            onChange={this.onChange}
+                        />
+                    </DropdownWrapperDiv>
                     : null
                 }
                 <List>
@@ -154,6 +125,10 @@ class DisplayArea extends Component {
         );
     }
 }
+
+const DropdownWrapperDiv = styled.div`
+    margin: 2rem auto 4rem;
+`;
 
 const List = styled.ul`
     list-style-type: none;

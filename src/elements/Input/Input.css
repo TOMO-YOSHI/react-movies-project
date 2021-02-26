@@ -1,9 +1,28 @@
 .MuiFormControl-root {
     margin-top: 8px !important;
+    width: fit-content;
+    position: relative !important;
+}
+
+.MuiAutocomplete-popper {
+    /* width: fit-content !important; */
+    /* position: absolute; */
+    /* left: 0 !important; */
+    /* border-radius: 0 !important; */
+    /* box-shadow: none !important; */
+    /* background-color: transparent !important; */
+    
+    /* transform:translate3d(0px, 272px, 0) !important; */
+    /* transform:translateX(-50px) !important; */
 }
 
 .MuiAutocomplete-popper ul {
-    background-color: #333333;
+    background-color: #555555;
     color: #ffffff;
-    width: fit-content;
+    /* width: fit-content; */
+    /* box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); */
+}
+
+.MuiAutocomplete-popper li:hover {
+    background-color: #333333;
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 
 import SearchArea from './components/SearchArea';
-import TabPanel from './components/TabPanel';
+import SimpleTabs from './components/SimpleTabs';
 
 import styled from "styled-components";
 
@@ -41,10 +41,11 @@ class App extends React.Component {
     }));
   }
 
-  messageWhileTyping = () => {
+  messageWhileTyping = (searchInput) => {
+    const message = searchInput ? "Please initiate a search" : "Please enter a search";
     this.setState(prev => ({
       ...prev,
-      searchResultMessage: "Please initiate a search",
+      searchResultMessage: message,
     }))
   }
 
@@ -56,7 +57,7 @@ class App extends React.Component {
           getSearchResultsHandler={this.getSearchResultsHandler}
           messageWhileTyping={this.messageWhileTyping}
           />
-        <TabPanel
+        <SimpleTabs
           searchType={this.state.searchType}
           searchResults={this.state.searchResults}
           searchResultMessage={this.state.searchResultMessage}
@@ -68,7 +69,11 @@ class App extends React.Component {
 
 const AppHeader1 = styled.h1`
     border: 3px solid #000000;
-    padding: .5rem;
+    padding: 1rem;
+    max-width: 1100px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 2.5rem;
 `
 
 export default App;

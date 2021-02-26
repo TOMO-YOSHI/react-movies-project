@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import styled from "styled-components";
 
 // elements
 import Input from '../elements/Input/Input';
 import DropdownList from '../elements/DropdownList/DropdownList';
 import Button from '../elements/Button/Button';
-
-import styled from "styled-components";
 
 const api_key = process.env.REACT_APP_MOVIES_API_KEY;
 
@@ -16,29 +14,15 @@ class SearchArea extends Component {
         this.state = {
             searchInput: "",
             searchType: "multi",
+            autocompleteList: [],
         }
-    }
-
-    componentDidMount() {
-
-    }
-
-    // shouldComponentUpdate(nextProps, nextState) {
-
-    // }
-
-    componentWillUpdate(nextProps, nextState) {
-
     }
 
     componentDidUpdate(prevProps, prevState) {
         // console.log(this.state.searchInput);
         // console.log(this.state.searchType);
         // console.log(this.state.searchResults);
-    }
-
-    componentWillUnmount() {
-
+        // console.log(this.state.autocompleteList);
     }
 
     onChange = (e) => {
@@ -63,8 +47,20 @@ class SearchArea extends Component {
                 searchResults: searchResults.results
             }));
         }
-
     }
+
+    getAutocompleteData = async(input) => {
+        if(input !== "") {
+            const searchResults = await fetch(`https://api.themoviedb.org/3/search/${this.state.searchType}?api_key=${api_key}&language=en-US&query=${input}&page=1&include_adult=false`)
+            .then(response => response.json())
+            .catch(error => console.log(error));
+
+            this.setState(prev=>({
+                ...prev,
+                autocompleteList: searchResults.results
+            }));
+        }
+    }  
 
     render() {
         return (
@@ -73,10 +69,12 @@ class SearchArea extends Component {
                     name="searchInput"
                     onChange={(e)=>{
                         this.onChange(e);
-                        this.props.messageWhileTyping();
+                        this.props.messageWhileTyping(e.target.value);
+                        this.getAutocompleteData(e.target.value);
                     }}
                     value={this.state.searchInput}
-                    placeholder="Search" />
+                    placeholder="Search"
+                    autocompleteList={this.state.autocompleteList} />
                 <DropdownList
                     initialState={{searchType: 'multi'}}
                     name="searchType"
@@ -94,7 +92,8 @@ const SearchAreaDiv = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 3rem
+    margin-top: 5rem;
+    margin-bottom: 4rem;
 `
 
 export default SearchArea;

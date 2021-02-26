@@ -69,7 +69,6 @@ const styles = (theme) => ({
 });
 
 class SimpleTabs extends React.Component {
-  // const [value, setValue] = React.useState(0);
   state = {
     value: 0
   }
