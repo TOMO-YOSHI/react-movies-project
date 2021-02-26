@@ -1,0 +1,9 @@
+.MuiFormControl-root {
+    margin-top: 8px !important;
+}
+
+.MuiAutocomplete-popper ul {
+    background-color: #333333;
+    color: #ffffff;
+    width: fit-content;
+}
