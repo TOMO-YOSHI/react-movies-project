@@ -20,7 +20,7 @@ class SearchArea extends Component {
     }
 
     componentDidMount() {
-        const data = fetch(`https://api.themoviedb.org/3/tv/550?api_key=${api_key}`)
+
     }
 
     // shouldComponentUpdate(nextProps, nextState) {
@@ -32,8 +32,9 @@ class SearchArea extends Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        // console.log(this.state);
+        // console.log(this.state.searchInput);
         // console.log(this.state.searchType);
+        // console.log(this.state.searchResults);
     }
 
     componentWillUnmount() {
@@ -47,12 +48,30 @@ class SearchArea extends Component {
         }))
     }
 
+    searchHandler = async(e) => {
+        e.preventDefault();
+
+        const searchResults = await fetch(`https://api.themoviedb.org/3/search/${this.state.searchType}?api_key=${api_key}&language=en-US&query=${this.state.searchInput}&page=1&include_adult=false`)
+        .then(response => response.json())
+        .catch(error => console.log(error));
+
+        this.props.getSearchResultsHandler(this.state.searchType, searchResults.results);
+
+        this.setState(prev=>({
+            ...prev,
+            searchResults: searchResults.results
+        }));
+    }
+
     render() {
         return (
             <SearchAreaDiv>
                 <Input
                     name="searchInput"
-                    onChange={this.onChange}
+                    onChange={(e)=>{
+                        this.onChange(e);
+                        this.props.messageWhileTyping();
+                    }}
                     value={this.state.searchInput}
                     placeholder="Search" />
                 <DropdownList
@@ -62,7 +81,7 @@ class SearchArea extends Component {
                     options={["movie", "multi", "tv"]}
                     onChange={this.onChange}
                 />
-                <Button />
+                <Button onClick={this.searchHandler} />
             </SearchAreaDiv>
         );
     }

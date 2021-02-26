@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 
 import DisplayArea from './DisplayArea';
+
+import { withStyles } from "@material-ui/core/styles";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -42,7 +42,7 @@ function a11yProps(index) {
   };
 }
 
-const useStyles = makeStyles((theme) => ({
+const styles = (theme) => ({
   root: {
     flexGrow: 1,
     border: "solid 1px #bbbbbb",
@@ -66,34 +66,53 @@ const useStyles = makeStyles((theme) => ({
   Tab: {
     flexGrow: 5,
   }
-}));
+});
 
-export default function SimpleTabs() {
-  const classes = useStyles();
-  const [value, setValue] = React.useState(0);
+class SimpleTabs extends React.Component {
+  // const [value, setValue] = React.useState(0);
+  state = {
+    value: 0
+  }
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
+  handleChange = (event, newValue) => {
+    this.setState({value: newValue});
   };
 
-  return (
-    <div className={classes.root}>
-      <AppBar position="static" className={classes.AppBar}>
-        <Tabs value={value} onChange={handleChange} aria-label="simple tabs example" TabIndicatorProps={{style: {backgroundColor: "#3f51b5"}}} className={classes.Tabs}>
-          <Tab label="Movies" {...a11yProps(0)} className={classes.Tab} />
-          <Tab label="Search Results" {...a11yProps(1)} className={classes.Tab} />
-          <Tab label="TV Shows" {...a11yProps(2)} className={classes.Tab} />
-        </Tabs>
-      </AppBar>
-      <TabPanel value={value} index={0}>
-        <DisplayArea type="movie" dropdownOptions={["now_playing", "popular", "top_rated", "upcoming"]} />
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        Search Results
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-      <DisplayArea type="tv" dropdownOptions={["airing_today", "on_the_air", "popular", "top_rated" ]} />
-      </TabPanel>
-    </div>
-  );
+  render() {
+    const { classes } = this.props;
+    return (
+      <div className={classes.root}>
+        <AppBar position="static" className={classes.AppBar}>
+          <Tabs value={this.state.value} onChange={this.handleChange} aria-label="simple tabs example" TabIndicatorProps={{style: {backgroundColor: "#3f51b5"}}} className={classes.Tabs}>
+            <Tab label="Movies" {...a11yProps(0)} className={classes.Tab} />
+            <Tab label="Search Results" {...a11yProps(1)} className={classes.Tab} />
+            <Tab label="TV Shows" {...a11yProps(2)} className={classes.Tab} />
+          </Tabs>
+        </AppBar>
+        <TabPanel value={this.state.value} index={0}>
+          <DisplayArea type="movie" dropdownOptions={["now_playing", "popular", "top_rated", "upcoming"]}
+          searchResults={this.props.searchResults}
+        />
+        </TabPanel>
+        <TabPanel value={this.state.value} index={1}>
+          <DisplayArea
+            type="search"
+            dropdownOptions={null}
+            searchResults={this.props.searchResults}
+            searchType={this.props.searchType}
+            searchResultMessage={this.props.searchResultMessage}
+          />
+        </TabPanel>
+        <TabPanel value={this.state.value} index={2}>
+        <DisplayArea
+          type="tv"
+          dropdownOptions={["airing_today", "on_the_air", "popular", "top_rated" ]}
+          searchResults={this.props.searchResults}
+        />
+        </TabPanel>
+      </div>
+    );
+  }
 }
+
+export default withStyles(styles, { withTheme: true })(SimpleTabs);

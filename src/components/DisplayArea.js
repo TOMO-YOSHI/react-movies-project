@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import DropdownList from '../elements/DropdownList/DropdownList';
 import ListItem from './ListItem';
-import { imageUrl } from '../data/urls';
 import styled from "styled-components";
 
 const api_key = process.env.REACT_APP_MOVIES_API_KEY;
@@ -11,7 +10,7 @@ class DisplayArea extends Component {
         super(props);
         this.state = {
             category: "popular",
-            searchResults: []
+            searchResults: [],
         }
 
     }
@@ -33,7 +32,15 @@ class DisplayArea extends Component {
     }
 
     componentDidMount() {
-        this.fetchData(this.state.category);
+        if(this.props.type !== "search") {
+            this.fetchData(this.state.category);
+        }
+        // else if (this.props.type === "search") {
+        //     this.setState(prev => ({
+        //         ...prev,
+        //         searchResults: this.props.searchResults
+        //     }))
+        // }
     }
 
     componentWillReceiveProps(nextProps) {
@@ -57,6 +64,14 @@ class DisplayArea extends Component {
             this.fetchData(this.state.category);
 
         }
+
+        if(prevState.searchResults !== this.state.searchResults &&
+            this.state.searchResults.length === 0) {
+                this.setState(prev => ({
+                    ...prev,
+                    searchResultMessage: "Sorry, there were no results",
+                }))
+        }
     }
 
     componentWillUnmount() {
@@ -73,19 +88,21 @@ class DisplayArea extends Component {
     render() {
         return (
             <div>
-                <DropdownList
-                    initialState={{category: 'popular'}}
-                    name="category"
-                    label="Category"
-                    options={this.props.dropdownOptions}
-                    onChange={this.onChange}
-                />
+                {
+                    this.props.type !== "search" ?
+                    <DropdownList
+                        initialState={{category: 'popular'}}
+                        name="category"
+                        label="Category"
+                        options={this.props.dropdownOptions}
+                        onChange={this.onChange}
+                    />
+                    : null
+                }
                 <List>
                 {
-                    this.state.searchResults.length
-                    ?
+                    this.state.searchResults.length !== 0 ?
                     this.state.searchResults.map(el=>{
-
                         return (
                             <ListItem
                                 key={el.id}
@@ -103,8 +120,34 @@ class DisplayArea extends Component {
                             />
                         )
                     })
-                    :
-                    <p>No Results</p>
+                    : this.props.searchResults.length !== 0 && this.props.type === "search" ?
+                    this.props.searchResults.map(el=>{
+                        return (
+                            <ListItem
+                                key={el.id}
+                                poster_path={el.poster_path}
+                                title={
+                                    this.props.type === "movie" ?
+                                    el.title
+                                    : this.props.type === "tv" ?
+                                    el.name
+                                    : this.props.type === "search" && el.media_type === "movie" ?
+                                    el.title
+                                    : this.props.type === "search" && el.media_type === "tv" ?
+                                    el.name
+                                    : this.props.searchType === "movie" ?
+                                    el.title
+                                    : this.props.searchType === "tv" ?
+                                    el.name
+                                    : null
+                                }
+                                release_date={el.release_date}
+                                popularity={el.popularity}
+                                overview={el.overview}
+                            />
+                        )
+                        }) :
+                    <MessageText>{this.props.searchResultMessage}</MessageText>
                 }
                 </List>
             </div>
@@ -117,43 +160,9 @@ const List = styled.ul`
     padding-left: 0
 `;
 
-// const ListItem = styled.li`
-//     margin: 1rem;
-//     display: grid;
-//     grid-template-columns: 1fr 3fr;
-//     box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.2), 0 2px 6px 0 rgba(0, 0, 0, 0.19);
-//     border-radius: 5px;
-// `;
-
-// const ListItemImage = styled.img`
-//     border-top-left-radius: 5px;
-//     border-bottom-left-radius: 5px;
-// `;
-
-// const ListItemTextDiv = styled.div`
-//     display: flex;
-//     align-items: center;
-//     padding: 1rem;
-// `;
-
-// const TitleText = styled.p`
-//     font-weight: 400;
-//     font-size: 1.25rem;
-//     margin: .25rem;
-// `;
-
-// const InfoText = styled.p`
-//     font-size: 1rem;
-//     margin: 0;
-//     color: #888;
-// `;
-
-// const DescriptionText = styled.p`
-//     font-size: .8rem;
-//     margin: 0;
-//     margin-top: 1rem;
-//     color: #888;
-//     text-align: left;
-// `;
+const MessageText = styled.p`
+    font-size: 1.5rem;
+    font-weight: 700;
+`;
 
 export default DisplayArea;
