@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 
 import SearchArea from './components/SearchArea';
-import TabPanel from './components/TabPanel/TabPanel';
+import TabPanel from './components/TabPanel';
 
 import styled from "styled-components";
 

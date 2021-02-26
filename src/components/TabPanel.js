@@ -7,7 +7,7 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 
-import DisplayArea from '../../components/DisplayArea';
+import DisplayArea from './DisplayArea';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -86,13 +86,13 @@ export default function SimpleTabs() {
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
-        <DisplayArea />
+        <DisplayArea type="movie" dropdownOptions={["now_playing", "popular", "top_rated", "upcoming"]} />
       </TabPanel>
       <TabPanel value={value} index={1}>
         Search Results
       </TabPanel>
       <TabPanel value={value} index={2}>
-        TV Shows
+      <DisplayArea type="tv" dropdownOptions={["airing_today", "on_the_air", "popular", "top_rated" ]} />
       </TabPanel>
     </div>
   );
