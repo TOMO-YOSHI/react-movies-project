@@ -45,7 +45,7 @@ function a11yProps(index) {
 const styles = (theme) => ({
   root: {
     flexGrow: 1,
-    border: "solid 1px #bbbbbb",
+    border: "solid 1px #000000",
     margin: "3rem auto",
     maxWidth: "1100px",
     backgroundColor: theme.palette.background.paper,

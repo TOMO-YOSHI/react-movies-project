@@ -51,16 +51,19 @@ class SearchArea extends Component {
     searchHandler = async(e) => {
         e.preventDefault();
 
-        const searchResults = await fetch(`https://api.themoviedb.org/3/search/${this.state.searchType}?api_key=${api_key}&language=en-US&query=${this.state.searchInput}&page=1&include_adult=false`)
-        .then(response => response.json())
-        .catch(error => console.log(error));
+        if(this.state.searchInput !== "") {
+            const searchResults = await fetch(`https://api.themoviedb.org/3/search/${this.state.searchType}?api_key=${api_key}&language=en-US&query=${this.state.searchInput}&page=1&include_adult=false`)
+            .then(response => response.json())
+            .catch(error => console.log(error));
+    
+            this.props.getSearchResultsHandler(this.state.searchType, searchResults.results);
+    
+            this.setState(prev=>({
+                ...prev,
+                searchResults: searchResults.results
+            }));
+        }
 
-        this.props.getSearchResultsHandler(this.state.searchType, searchResults.results);
-
-        this.setState(prev=>({
-            ...prev,
-            searchResults: searchResults.results
-        }));
     }
 
     render() {
