@@ -1,26 +1,22 @@
 import React from 'react';
 import './App.css';
 
+// components
 import SearchArea from './components/SearchArea';
 import SimpleTabs from './components/SimpleTabs';
 
 import styled from "styled-components";
 
+const api_key = process.env.REACT_APP_MOVIES_API_KEY;
+
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // searchInput: "",
-      searchType: "multi",
       searchResults: [],
+      searchType: "",
       searchResultMessage: "Please enter a search"
     }
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    // console.log(this.state.searchInput);
-    // console.log(this.state.searchType);
-    // console.log(this.state.searchResults);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -49,13 +45,36 @@ class App extends React.Component {
     }))
   }
 
+  searchHandler = async(e, searchType, searchInput) => {
+    e.preventDefault();
+
+    this.setState(prev => ({
+      ...prev,
+      searchResults: [],
+    }))
+
+    if(searchInput !== "") {
+        const searchResults = await fetch(`https://api.themoviedb.org/3/search/${searchType}?api_key=${api_key}&language=en-US&query=${searchInput}&page=1&include_adult=false`)
+        .then(response => response.json())
+        .catch(error => console.log(error));
+
+        this.getSearchResultsHandler(searchType, searchResults.results);
+
+        this.setState(prev=>({
+            ...prev,
+            searchResults: searchResults.results
+        }));
+    }
+  }
+
   render() {
     return (
       <div className="App">
         <AppHeader1>React Movies App</AppHeader1>
         <SearchArea 
-          getSearchResultsHandler={this.getSearchResultsHandler}
           messageWhileTyping={this.messageWhileTyping}
+          searchHandler={this.searchHandler}
+          searchType={this.state.searchType}
           />
         <SimpleTabs
           searchType={this.state.searchType}

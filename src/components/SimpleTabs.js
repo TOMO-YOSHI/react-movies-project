@@ -4,10 +4,10 @@ import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
-
-import DisplayArea from './DisplayArea';
-
 import { withStyles } from "@material-ui/core/styles";
+
+// components
+import DisplayArea from './DisplayArea';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;

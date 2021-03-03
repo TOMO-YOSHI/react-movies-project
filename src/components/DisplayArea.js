@@ -3,6 +3,8 @@ import DropdownList from '../elements/DropdownList/DropdownList';
 import ListItem from './ListItem';
 import styled from "styled-components";
 
+// url
+import { apiUrl } from '../data/urls';
 const api_key = process.env.REACT_APP_MOVIES_API_KEY;
 
 class DisplayArea extends Component {
@@ -10,20 +12,20 @@ class DisplayArea extends Component {
         super(props);
         this.state = {
             category: "popular",
-            searchResults: [],
+            categoryResults: [],
         }
     }
 
     fetchData = async(category) => {
-        const searchResults = await fetch(`https://api.themoviedb.org/3/${this.props.type}/${category}?api_key=${api_key}&language=en-US`)
+        const categoryResults = await fetch(`${apiUrl}/${this.props.type}/${category}?api_key=${api_key}&language=en-US`)
         .then(response => response.json())
         .catch(error => console.log(error))
 
         this.setState(prev => ({
             ...prev,
-            searchResults: searchResults.results
+            categoryResults: categoryResults.results
         }))
-        // console.log(searchResults);
+        // console.log(categoryResults);
     }
 
     componentDidMount() {
@@ -35,15 +37,6 @@ class DisplayArea extends Component {
     componentDidUpdate(prevProps, prevState) {
         if(prevState.category !== this.state.category) {
             this.fetchData(this.state.category);
-
-        }
-
-        if(prevState.searchResults !== this.state.searchResults &&
-            this.state.searchResults.length === 0) {
-                this.setState(prev => ({
-                    ...prev,
-                    searchResultMessage: "Sorry, there were no results",
-                }))
         }
     }
 
@@ -72,8 +65,8 @@ class DisplayArea extends Component {
                 }
                 <List>
                 {
-                    this.state.searchResults.length !== 0 ?
-                    this.state.searchResults.map(el=>{
+                    this.state.categoryResults.length !== 0 ?
+                    this.state.categoryResults.map(el=>{
                         return (
                             <ListItem
                                 key={el.id}

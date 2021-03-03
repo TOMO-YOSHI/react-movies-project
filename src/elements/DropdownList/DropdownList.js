@@ -3,10 +3,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-
 import { withStyles } from "@material-ui/core/styles";
-
-import "./DropdownList.css";
 
 const styles = (theme) => ({
   formControl: {
@@ -60,19 +57,6 @@ class DropdownList extends React.Component {
                     id: this.props.name,
                 }}
                 >
-                {/* <option aria-label="None" value="" /> */}
-                {/* {
-                    this.props.options.map(el => {
-                        return (
-                            <option
-                                value={el}
-                                key={el}
-                                name={this.props.name}
-                                >{el}
-                            </option>
-                        )
-                    })
-                } */}
                 {
                     this.props.options.map(el => {
                         return (
