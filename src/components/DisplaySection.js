@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
-import DropdownList from '../elements/DropdownList/DropdownList';
+import DropdownList from './elements/DropdownList/DropdownList';
 import ListItem from './ListItem';
 import styled from "styled-components";
 
-import BasicPagination from './BasicPagination';
+import PaginationComponent from './PaginationComponent';
 
 // url
 import { apiUrl } from '../data/urls';
 const api_key = process.env.REACT_APP_MOVIES_API_KEY;
 
-class DisplayArea extends Component {
+class DisplaySection extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -101,7 +101,7 @@ class DisplayArea extends Component {
                             }
                         })
                     }
-                    <BasicPagination length={this.state.categoryResults.length} getPageNumber={this.getPageNumber} />
+                    <PaginationComponent length={this.state.categoryResults.length} getPageNumber={this.getPageNumber} />
                     </>
                     : this.props.searchResults.length !== 0 && this.props.type === "search" ?
                     <>
@@ -137,7 +137,7 @@ class DisplayArea extends Component {
                             }
                         })
                     }
-                    <BasicPagination length={this.props.searchResults.length} getPageNumber={this.getPageNumber} />
+                    <PaginationComponent length={this.props.searchResults.length} getPageNumber={this.getPageNumber} />
                     </>
                     :
                     <MessageText>{this.props.searchResultMessage}</MessageText>
@@ -162,4 +162,4 @@ const MessageText = styled.p`
     font-weight: 700;
 `;
 
-export default DisplayArea;
+export default DisplaySection;

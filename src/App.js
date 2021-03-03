@@ -2,8 +2,8 @@ import React from 'react';
 import './App.css';
 
 // components
-import SearchArea from './components/SearchArea';
-import SimpleTabs from './components/SimpleTabs';
+import SearchSection from './components/SearchSection';
+import TabsSection from './components/TabsSection';
 
 import styled from "styled-components";
 
@@ -71,12 +71,12 @@ class App extends React.Component {
     return (
       <div className="App">
         <AppHeader1>React Movies App</AppHeader1>
-        <SearchArea 
+        <SearchSection 
           messageWhileTyping={this.messageWhileTyping}
           searchHandler={this.searchHandler}
           searchType={this.state.searchType}
           />
-        <SimpleTabs
+        <TabsSection
           searchType={this.state.searchType}
           searchResults={this.state.searchResults}
           searchResultMessage={this.state.searchResultMessage}
