@@ -10,7 +10,7 @@ const styles = (theme) => ({
   },
 });
 
-class BasicPagination extends React.Component {    
+class PaginationComponent extends React.Component {    
     render() {
         const { classes, length } = this.props;
         const pages = Math.ceil(length / 10);
@@ -23,4 +23,4 @@ class BasicPagination extends React.Component {
     }
 }
 
-export default withStyles(styles, { withTheme: true })(BasicPagination);
+export default withStyles(styles, { withTheme: true })(PaginationComponent);

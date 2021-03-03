@@ -2,15 +2,15 @@ import React, { Component } from 'react';
 import styled from "styled-components";
 
 // elements
-import Input from '../elements/Input/Input';
-import DropdownList from '../elements/DropdownList/DropdownList';
-import Button from '../elements/Button/Button';
+import Input from './elements/Input/Input';
+import DropdownList from './elements/DropdownList/DropdownList';
+import Button from './elements/Button/Button';
 
 // url
 import { apiUrl } from '../data/urls';
 const api_key = process.env.REACT_APP_MOVIES_API_KEY;
 
-class SearchArea extends Component {
+class SearchSection extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -48,7 +48,7 @@ class SearchArea extends Component {
 
     render() {
         return (
-            <SearchAreaDiv>
+            <SearchSectionDiv>
                 <Input
                     name="searchInput"
                     onChange={(e)=>{
@@ -68,12 +68,12 @@ class SearchArea extends Component {
                     onChange={this.onChange}
                 />
                 <Button onClick={(e)=>this.props.searchHandler(e,this.state.searchType, this.state.searchInput)} />
-            </SearchAreaDiv>
+            </SearchSectionDiv>
         );
     }
 }
 
-const SearchAreaDiv = styled.div`
+const SearchSectionDiv = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
@@ -81,4 +81,4 @@ const SearchAreaDiv = styled.div`
     margin-bottom: 4rem;
 `
 
-export default SearchArea;
+export default SearchSection;

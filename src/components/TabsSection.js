@@ -7,7 +7,7 @@ import Box from '@material-ui/core/Box';
 import { withStyles } from "@material-ui/core/styles";
 
 // components
-import DisplayArea from './DisplayArea';
+import DisplaySection from './DisplaySection';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -68,7 +68,7 @@ const styles = (theme) => ({
   }
 });
 
-class SimpleTabs extends React.Component {
+class TabsSection extends React.Component {
   state = {
     value: 0
   }
@@ -89,12 +89,12 @@ class SimpleTabs extends React.Component {
           </Tabs>
         </AppBar>
         <TabPanel value={this.state.value} index={0}>
-          <DisplayArea type="movie" dropdownOptions={["now_playing", "popular", "top_rated", "upcoming"]}
+          <DisplaySection type="movie" dropdownOptions={["now_playing", "popular", "top_rated", "upcoming"]}
           searchResults={this.props.searchResults}
         />
         </TabPanel>
         <TabPanel value={this.state.value} index={1}>
-          <DisplayArea
+          <DisplaySection
             type="search"
             dropdownOptions={null}
             searchResults={this.props.searchResults}
@@ -103,7 +103,7 @@ class SimpleTabs extends React.Component {
           />
         </TabPanel>
         <TabPanel value={this.state.value} index={2}>
-        <DisplayArea
+        <DisplaySection
           type="tv"
           dropdownOptions={["airing_today", "on_the_air", "popular", "top_rated" ]}
           searchResults={this.props.searchResults}
@@ -114,4 +114,4 @@ class SimpleTabs extends React.Component {
   }
 }
 
-export default withStyles(styles, { withTheme: true })(SimpleTabs);
+export default withStyles(styles, { withTheme: true })(TabsSection);
