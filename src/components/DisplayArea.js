@@ -3,6 +3,8 @@ import DropdownList from '../elements/DropdownList/DropdownList';
 import ListItem from './ListItem';
 import styled from "styled-components";
 
+import BasicPagination from './BasicPagination';
+
 // url
 import { apiUrl } from '../data/urls';
 const api_key = process.env.REACT_APP_MOVIES_API_KEY;
@@ -13,6 +15,7 @@ class DisplayArea extends Component {
         this.state = {
             category: "popular",
             categoryResults: [],
+            page: 1,
         }
     }
 
@@ -47,6 +50,13 @@ class DisplayArea extends Component {
         }))
     }
 
+    getPageNumber = (page) => {
+        this.setState(prev => ({
+            ...prev,
+            page: page
+        }))
+    }
+
     render() {
         return (
             <div>
@@ -66,51 +76,70 @@ class DisplayArea extends Component {
                 <List>
                 {
                     this.state.categoryResults.length !== 0 ?
-                    this.state.categoryResults.map(el=>{
-                        return (
-                            <ListItem
-                                key={el.id}
-                                poster_path={el.poster_path}
-                                title={
-                                    this.props.type === "movie" ?
-                                    el.title
-                                    : this.props.type === "tv" ?
-                                    el.original_name
-                                    : null
-                                }
-                                release_date={el.release_date}
-                                popularity={el.popularity}
-                                overview={el.overview}
-                            />
-                        )
-                    })
+                    <>
+                    {
+                        this.state.categoryResults.map((el,i)=>{
+
+                            if ( 0 + (this.state.page - 1) * 10 <= i && i <= (this.state.page - 1) * 10 + 9 ) {
+
+                                return (
+                                    <ListItem
+                                        key={el.id}
+                                        poster_path={el.poster_path}
+                                        title={
+                                            this.props.type === "movie" ?
+                                            el.title
+                                            : this.props.type === "tv" ?
+                                            el.original_name
+                                            : null
+                                        }
+                                        release_date={el.release_date}
+                                        popularity={el.popularity}
+                                        overview={el.overview}
+                                    />
+                                )
+                            }
+                        })
+                    }
+                    <BasicPagination length={this.state.categoryResults.length} getPageNumber={this.getPageNumber} />
+                    </>
                     : this.props.searchResults.length !== 0 && this.props.type === "search" ?
-                    this.props.searchResults.map(el=>{
-                        return (
-                            <ListItem
-                                key={el.id}
-                                poster_path={el.poster_path}
-                                title={
-                                    this.props.type === "movie" ?
-                                    el.title
-                                    : this.props.type === "tv" ?
-                                    el.name
-                                    : this.props.type === "search" && el.media_type === "movie" ?
-                                    el.title
-                                    : this.props.type === "search" && el.media_type === "tv" ?
-                                    el.name
-                                    : this.props.searchType === "movie" ?
-                                    el.title
-                                    : this.props.searchType === "tv" ?
-                                    el.name
-                                    : null
-                                }
-                                release_date={el.release_date}
-                                popularity={el.popularity}
-                                overview={el.overview}
-                            />
-                        )
-                        }) :
+                    <>
+                    {
+                        this.props.searchResults.map((el,i)=>{
+
+                            if ( 0 + (this.state.page - 1) * 10 <= i && i <= (this.state.page - 1) * 10 + 9 ) {
+
+                                return (
+                                    <ListItem
+                                        key={el.id}
+                                        poster_path={el.poster_path}
+                                        title={
+                                            this.props.type === "movie" ?
+                                            el.title
+                                            : this.props.type === "tv" ?
+                                            el.name
+                                            : this.props.type === "search" && el.media_type === "movie" ?
+                                            el.title
+                                            : this.props.type === "search" && el.media_type === "tv" ?
+                                            el.name
+                                            : this.props.searchType === "movie" ?
+                                            el.title
+                                            : this.props.searchType === "tv" ?
+                                            el.name
+                                            : null
+                                        }
+                                        release_date={el.release_date}
+                                        popularity={el.popularity}
+                                        overview={el.overview}
+                                    />
+                                )
+                            }
+                        })
+                    }
+                    <BasicPagination length={this.props.searchResults.length} getPageNumber={this.getPageNumber} />
+                    </>
+                    :
                     <MessageText>{this.props.searchResultMessage}</MessageText>
                 }
                 </List>
